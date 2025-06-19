@@ -1,0 +1,16 @@
+chromadb
+langchain-community
+langchain-core
+langchain-openai
+langgraph
+langgraph-checkpoint-sqlite
+langgraph-sdk
+langgraph-supervisor
+langsmith
+notebook
+openevals
+pandas
+python-dotenv
+slack_sdk
+tavily-python
+wikipedia
