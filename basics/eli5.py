@@ -53,6 +53,8 @@ def eli5(question):
     answer = explain(question, context)
     return answer
 
-# Run the application
-# question = "What is trustcall?"
-# print(eli5(question))
+
+if __name__ == "__main__":
+    # Run the application
+    question = "What is LangChain?"
+    print(eli5(question))
