@@ -86,6 +86,7 @@ music_subagent_prompt = """
        - Mention the album when relevant
        - Note if it's part of any playlists
        - Indicate if there are multiple versions
+    4. If results aren't available, DO NOT MAKE ANY SONGS, ALBUMS, OR ARTISTS UP. Just say there are no results.
     
     Message history is also attached.  
     """
