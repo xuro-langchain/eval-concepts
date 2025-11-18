@@ -1,4 +1,5 @@
 import asyncio
+from contextlib import asynccontextmanager
 import sys
 from pathlib import Path
 
@@ -180,3 +181,46 @@ async def setup_email_assistant():
 #     # use email_assistant here
 #     # session stays open while in this block
 #     pass
+
+
+# Studio Function
+@asynccontextmanager
+async def studio_email_assistant():
+    async with stdio_client(server_params) as (read, write):
+        async with ClientSession(read, write) as session:
+            await session.initialize()
+            tools = await load_mcp_tools(session)
+            tools_by_name = {tool.name: tool for tool in tools}
+            llm = ChatOpenAI(model="gpt-4.1", temperature=0.0)
+            llm_with_tools = llm.bind_tools(tools, tool_choice="any", parallel_tool_calls=False)
+            llm_router = llm.with_structured_output(RouterSchema)
+
+            # Build response agent workflow
+            agent_builder = StateGraph(State)
+            agent_builder.add_node("agent", create_llm_call(llm_with_tools))
+            agent_builder.add_node("tools", create_tool_node(tools_by_name))
+            agent_builder.add_edge(START, "agent")
+            agent_builder.add_conditional_edges(
+                "agent",
+                should_continue,
+                {
+                    # Name returned by should_continue : Name of next node to visit
+                    "Action": "tools",
+                    END: END,
+                },
+            )
+            agent_builder.add_edge("tools", "agent")
+
+            # Compile the agent
+            agent = agent_builder.compile()
+
+            # Build overall workflow with triage router
+            triage_router = create_triage_router(llm_router)
+            overall_workflow = (
+                StateGraph(State, input=StateInput)
+                .add_node(triage_router)
+                .add_node("response_agent", agent)
+                .add_edge(START, "triage_router")
+            )
+            email_assistant = overall_workflow.compile()
+            yield email_assistant

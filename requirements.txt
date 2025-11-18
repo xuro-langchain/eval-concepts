@@ -4,6 +4,7 @@ langchain-core
 langchain-openai
 langchain-mcp-adapters
 langgraph
+langgraph-cli[inmem]
 langgraph-checkpoint-sqlite
 langgraph-sdk
 langgraph-supervisor
