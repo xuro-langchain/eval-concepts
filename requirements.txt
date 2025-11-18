@@ -2,6 +2,7 @@ chromadb
 langchain-community
 langchain-core
 langchain-openai
+langchain-mcp-adapters
 langgraph
 langgraph-checkpoint-sqlite
 langgraph-sdk
@@ -14,3 +15,4 @@ python-dotenv
 slack_sdk
 tavily-python
 wikipedia
+mcp
