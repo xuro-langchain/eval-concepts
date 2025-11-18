@@ -2,7 +2,8 @@
     "dependencies": ["."],
     "graphs": {
       "Basic Email Agent": "./agents/email_basic.py:email_assistant",
-      "MCP Email Agent": "./agents/email_mcp.py:studio_email_assistant"
+      "MCP Email Agent": "./agents/email_mcp.py:studio_email_assistant",
+      "Basic Multi Agent": "./agents/multi_basic.py:multiagent_studio"
     },
     "env": "./.env"
   }
