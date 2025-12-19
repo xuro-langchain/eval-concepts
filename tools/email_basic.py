@@ -3,13 +3,6 @@ from typing import Literal
 from pydantic import BaseModel
 from langchain_core.tools import tool
 
-import asyncio
-
-from mcp import ServerSession
-from mcp.server import FastMCP
-from mcp.server.fastmcp import Context
-
-mcp = FastMCP("Email MCP Service")
 
 @tool
 def schedule_meeting(
