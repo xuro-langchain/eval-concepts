@@ -130,8 +130,6 @@ supervisor_prompt = """
         """
 )
 def call_invoice_information_subagent(runtime: ToolRuntime, query: str):
-    print('made it here')
-    print(f"invoice subagent input: {query}")
     result = invoice_subagent.invoke({
         "messages": [{"role": "user", "content": query}],
         "customer_id": runtime.state.get("customer_id", {})
