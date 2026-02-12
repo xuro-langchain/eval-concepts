@@ -1,60 +1,120 @@
-# Eval Concepts
+# LangSmith Agent Evaluation Cookbook
 
-## Introduction
-This repository contains notebooks demonstrating evaluation concepts for LangGraph agents using LangSmith. The notebooks cover different types of evaluations:
+A hands-on guide to evaluating LLM agents with [LangSmith](https://smith.langchain.com). This cookbook walks through four evaluation patterns — **final response**, **single step**, **trajectory**, and **multi-turn** — using real agent examples built with [LangGraph](https://langchain-ai.github.io/langgraph/).
 
-1. **Email Agent Evaluations** (`email_basic.ipynb`, `email_mcp.ipynb`): Demonstrates evaluation concepts with an email assistant agent that can triage emails and respond appropriately
-2. **Multi-Agent Evaluations** (`multi_thread.ipynb`): Demonstrates multi-turn evaluation concepts with a customer service multi-agent system
+<p align="center">
+  <img src="images/evals.png" alt="Evaluation Concepts" width="700"/>
+</p>
 
-## Pre-work
+## What You'll Learn
 
-### Create .env file
+| Notebook | Evaluation Patterns | Description |
+|----------|-------------------|-------------|
+| [`email_basic.ipynb`](notebooks/email_basic.ipynb) | Final Response, Single Step, Trajectory | Evaluate an email triage-and-response agent using LangChain tools |
+| [`email_mcp.ipynb`](notebooks/email_mcp.ipynb) | Final Response, Single Step, Trajectory | Same evaluation patterns applied to an agent that leverages MCP-based tools |
+| [`multi_thread.ipynb`](notebooks/multi_thread.ipynb) | Multi-Turn Simulation | Simulate multi-turn conversations and evaluate a customer service multi-agent system |
 
-Create a `.env` file with the necessary environment variables (e.g., `LANGCHAIN_API_KEY`, `OPENAI_API_KEY`, etc.) to run the applications.
+## Evaluation Patterns
 
-### Install dependencies
+### Final Response Evaluations
 
-Create a virtual environment
+Evaluate the complete agent output against success criteria using an LLM-as-judge.
+
+<p align="center">
+  <img src="images/final_response.png" alt="Final Response Evaluation" width="600"/>
+</p>
+
+### Single Step Evaluations
+
+Evaluate individual agent steps (e.g., triage classification) using exact-match metrics.
+
+<p align="center">
+  <img src="images/single_step.png" alt="Single Step Evaluation" width="600"/>
+</p>
+
+### Trajectory Evaluations
+
+Evaluate the sequence of tool calls made by the agent against expected trajectories.
+
+<p align="center">
+  <img src="images/trajectory.png" alt="Trajectory Evaluation" width="600"/>
+</p>
+
+### Multi-Turn Evaluations
+
+Simulate multi-turn conversations with synthetic users and evaluate across dimensions like resolution, satisfaction, and professionalism.
+
+<p align="center">
+  <img src="images/multi_turn.png" alt="Multi-Turn Evaluation" width="600"/>
+</p>
+
+## Getting Started
+
+### Prerequisites
+
+- Python 3.11+
+- A [LangSmith](https://smith.langchain.com) account (`LANGCHAIN_API_KEY`)
+- An [OpenAI](https://platform.openai.com) account (`OPENAI_API_KEY`)
+
+### 1. Clone the repository
+
+```bash
+git clone https://github.com/xuro-langchain/eval-concepts.git
+cd eval-concepts
 ```
+
+### 2. Set up environment variables
+
+Copy the example `.env` file and fill in your API keys:
+
+```bash
+cp .env.example .env
+```
+
+### 3. Install dependencies
+
+**Using uv (recommended):**
+
+```bash
+uv sync
+```
+
+**Using pip:**
+
+```bash
 python3 -m venv .venv
 source .venv/bin/activate
-```
-
-Install dependencies
-```
 pip install -r requirements.txt
 ```
 
-Then you're ready to run the notebooks!
+### 4. Run the notebooks
 
-## The Notebooks
+Launch Jupyter and open any notebook in the `notebooks/` directory:
 
-### Email Agent Evaluations
+```bash
+jupyter notebook notebooks/
+```
 
-#### `email_basic.ipynb`
-This notebook demonstrates three types of evaluations with a basic email assistant agent:
+**Recommended order:**
+1. **`email_basic.ipynb`** — Core evaluation patterns (final response, single step, trajectory)
+2. **`email_mcp.ipynb`** — Same patterns with MCP tool integration
+3. **`multi_thread.ipynb`** — Multi-turn simulation evaluations
 
-1. **Final Response Evaluations**: Evaluating the complete agent output against success criteria
-2. **Single Step Evaluations**: Evaluating individual steps (e.g., triage classification) 
-3. **Trajectory Evaluations**: Evaluating the sequence of tool calls made by the agent
+## Project Structure
 
-The email agent (`agents/email_basic.py`) consists of:
-- A **triage step** that classifies emails as "ignore", "respond", or "notify"
-- A **response step** that takes actions like checking calendar availability, scheduling meetings, and writing emails
-
-#### `email_mcp.ipynb`
-Similar to `email_basic.ipynb`, but uses the Model Context Protocol (MCP) version of the email agent (`agents/email_mcp.py`). This demonstrates how to evaluate agents that use MCP for tool integration.
-
-### Multi-Agent Evaluations
-
-#### `multi_thread.ipynb`
-This notebook demonstrates **multi-turn evaluations** using OpenEvals' simulation capabilities. The multi-agent system (`agents/multi_basic.py`) is a customer service assistant for a digital music store with:
-
-- A supervisor agent that routes queries to specialized sub-agents
-- **Invoice sub-agent**: Handles invoice-related queries
-- **Music sub-agent**: Handles music catalog queries
-
-The notebook shows how to:
-- Create simulated user personas
-- Run multi-turn conversation simulations
-- Evaluate conversations across multiple turns using various metrics (resolution, satisfaction, professionalism, number of turns)
+```
+eval-concepts/
+├── notebooks/               # Evaluation tutorial notebooks
+│   ├── email_basic.ipynb        # Core eval patterns
+│   ├── email_mcp.ipynb          # MCP variant of email evaluations
+│   └── multi_thread.ipynb       # Multi-turn simulation evaluations
+├── agents/                  # Agent implementations
+│   ├── email_basic.py           # Email agent with LangChain tools
+│   ├── email_mcp.py             # Email agent with MCP tools
+│   └── multi_basic.py           # Multi-agent customer service system
+├── tools/                   # Tool definitions
+├── utils/                   # Helper utilities and prompts
+├── images/                  # Diagrams used in notebooks
+├── config.py                # LangSmith client configuration
+└── .env.example             # Required environment variables
+```
